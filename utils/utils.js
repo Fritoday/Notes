@@ -8,6 +8,45 @@ const isWx = function () {
 };
 
 /**
+ * 高亮标题
+ * @param content 必填 需要高亮的文本
+ * @param highLight 必填 需要高亮的内容
+ * @param color 必填 高亮的颜色 支持16进制、rgb、rgba、英文
+ *
+ * 示例:
+ * <div v-html="highLightTitle('123456', '123', 'red')"></div>
+ */
+const highLightTitle = (content, highLight, color) => {
+    const reg = new RegExp(`${highLight}`, 'g');
+    return content.replace(reg, `<span style="color:${color}">${highLight}</span>`);
+};
+
+/**
+ * 获取当月、当年每天的时间戳
+ * @param timestamp 必填 时间戳
+ * @param unit 选填 输出时间当月or年，year表示输出结果为年份，month表示输出结果为月份， 默认值为month
+ *
+ * 示例:
+ * getTimestamps(1727712000000, 'year'); [1727712000000,... ,1727712000000] // 返回当月or年每天的时间戳
+ */
+function getTimestamps(timestamp, unit = 'month') {
+    const date = new Date(timestamp);
+    let startDate, endDate;
+    if (unit === 'year') {
+        startDate = new Date(date.getFullYear(), 0, 1); // 年的开始
+        endDate = new Date(date.getFullYear() + 1, 0, 1); // 年的结束
+    } else {
+        startDate = new Date(date.getFullYear(), date.getMonth(), 1); // 月的开始
+        endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1); // 月的结束
+    }
+    const timestamps = [];
+    for (let d = startDate; d < endDate; d.setDate(d.getDate() + 1)) {
+        timestamps.push(d.getTime());
+    }
+    return timestamps;
+}
+
+/**
  * 时间戳转换成日期工具函数
  * @param fmt 必填 目标日期显示格式
  * @param timestamp 必填 时间戳
@@ -83,7 +122,6 @@ const getCookie = function (cname) {
     return "";
 };
 
-
 /**
  * 生成uuid
  * @returns {String}
@@ -98,6 +136,7 @@ const uuid = function () {
     s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
     return s.join("");
 };
+
 /**
  * 16进制转rgba
  * @param hex 16进制颜色
@@ -116,4 +155,4 @@ const hexToRgba = (hex, opacity, output = "string") => {
     }
 };
 
-export { isWx, format, getUrlParamsString, getCookie, uuid, hexToRgba };
+export { isWx, format, getUrlParamsString, getCookie, uuid, hexToRgba, getTimestamps, highLightTitle };
