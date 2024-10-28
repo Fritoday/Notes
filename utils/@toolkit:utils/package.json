@@ -1,0 +1,19 @@
+{
+  "name": "@toolkit/utils",
+  "version": "0.0.1",
+  "description": "A collection of utility functions",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["utils", "javascript"],
+  "author": "KHJ",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
